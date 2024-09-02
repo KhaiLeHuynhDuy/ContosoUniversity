@@ -155,23 +155,40 @@ namespace ContosoUniversity.Controllers
             }
             return View(student);
         }
+        //[ValidateAntiForgeryToken]
+        //[HttpPost]
+        //public async Task<IActionResult> Delete(Student student)
+        //{
+        //    try
+        //    {
+        //       // Student studentToDelete = new Student() { ID = id };
+        //        _context.Entry(student).State = EntityState.Deleted;
+        //        await _context.SaveChangesAsync();
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    catch (DbUpdateException /* ex */)
+        //    {
+        //        //Log the error (uncomment ex variable name and write a log.)
+        //        return RedirectToAction(nameof(Delete), new { id = student.ID, saveChangesError = true });
+        //    }
+        //}
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(Student student)
+        [ActionName("Delete")]
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
             try
             {
-               // Student studentToDelete = new Student() { ID = id };
-                _context.Entry(student).State = EntityState.Deleted;
+                Student studentToDelete = new Student() { ID = id };
+                _context.Entry(studentToDelete).State = EntityState.Deleted;
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             catch (DbUpdateException /* ex */)
             {
                 //Log the error (uncomment ex variable name and write a log.)
-                return RedirectToAction(nameof(Delete), new { id = student.ID, saveChangesError = true });
+                return RedirectToAction(nameof(Delete), new { id = id, saveChangesError = true });
             }
         }
-
     }
 }
